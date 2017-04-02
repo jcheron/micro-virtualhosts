@@ -36,4 +36,8 @@ class Role{
 		$this->users=$users;
 	}
 
+	public function __toString(){
+		return $this->name;
+	}
+
 }

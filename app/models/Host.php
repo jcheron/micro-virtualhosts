@@ -69,5 +69,7 @@ class Host{
 	 public function setUser($user){
 		$this->user=$user;
 	}
-
+	public function __toString(){
+		return $this->name;
+	}
 }

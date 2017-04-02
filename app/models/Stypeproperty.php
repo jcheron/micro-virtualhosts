@@ -74,4 +74,8 @@ class Stypeproperty{
 		$this->stype=$stype;
 	}
 
+	public function __toString(){
+		return $this->name;
+	}
+
 }

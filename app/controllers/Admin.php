@@ -59,7 +59,7 @@ class Admin extends ControllerBase{
 	}
 
 	private function getFields($model){
-		$properties=Reflexion::getProperties($model);
+		$properties=OrmUtils::getSerializableFields($model);
 		$result=[];
 		foreach ($properties as $prop){
 			$result[]=$prop->getName();
@@ -167,8 +167,7 @@ class Admin extends ControllerBase{
 		$instance=$this->getModelInstance($ids);
 		$table=$_SESSION['table'];
 		$model=ucfirst($table);
-		$relations = $this->modelsManager->getRelations($model);
-
+		$relations = OrmUtils::getFieldsInRelations($model);
 		$semantic=$this->jquery->semantic();
 		$grid=$semantic->htmlGrid("detail");
 		if(sizeof($relations)>0){
@@ -176,9 +175,13 @@ class Admin extends ControllerBase{
 		if($wide<4)
 			$wide=4;
 			foreach ($relations as $relation){
-				$memberFK=$relation->getOption("alias");
-				$methodFK= "get".ucfirst($relation->getOption("alias"));
-				$objectFK=call_user_func([$instance,$methodFK]);
+				if(Reflexion::getAnnotationMember($model, $relation->getName(), "@oneToMany")!==false){
+					$objectFK=DAO::getOneToMany($instance, $relation->getName());
+				}else{
+					$relation->setAccessible(true);
+					$objectFK=$relation->getValue($instance);
+				}
+				$memberFK=$relation->getName();
 
 				$header=new HtmlHeader("",4,$memberFK,"content");
 				if(is_array($objectFK) || $objectFK instanceof Traversable){

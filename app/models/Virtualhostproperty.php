@@ -84,4 +84,7 @@ class Virtualhostproperty{
 		$this->virtualhost=$virtualhost;
 	}
 
+	public function __toString(){
+		return $this->value;
+	}
 }

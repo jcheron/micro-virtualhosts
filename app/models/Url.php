@@ -93,4 +93,8 @@ class Url{
 		$this->roles=$roles;
 	}
 
+	public function __toString(){
+		return $this->controller."/".$this->action;
+	}
+
 }
