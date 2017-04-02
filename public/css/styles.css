@@ -1,0 +1,42 @@
+body{
+	font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+
+.navbar{
+	margin-bottom: 0px;
+	
+}
+#top, #navbarJS{
+	height: 52px;
+}
+
+header {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.pagehead {
+    background-color: #1B1C1D;
+    border-bottom: 1px solid #eee;
+    margin: 0 0 1rem 0;
+    padding: 1em;
+    position: relative;
+}
+
+footer {
+	background-color: #222;
+    position: relative;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 40px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #767676;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+}
+#content-container{
+	min-height: 650px;
+}

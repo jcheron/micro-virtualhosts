@@ -1,0 +1,6 @@
+{"require":{
+	"twig\/twig":"~1.0",
+	"mindplay\/annotations":"~1.2",
+	"phpmv\/php-mv-ui":"dev-master"
+	}
+}
