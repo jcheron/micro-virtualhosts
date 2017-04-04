@@ -4,39 +4,45 @@ namespace micro\controllers;
 /**
  * Classe Autoloader
  * @author jc
- * @version 1.0.0.1
+ * @version 1.0.0.2
  * @package controllers
  */
 class Autoloader{
+	private static $config;
+	private static $directories;
+	private static $namespaces;
 
-	public static function register(){
+	public static function register($config){
+		self::$config=$config;
+		self::$directories=["controllers","models"];
+		if(@\is_array($config["namespaces"]))
+			self::$namespaces=$config["namespaces"];
+		if(is_array($config["directories"])){
+			self::$directories=array_merge(self::$directories,$config["directories"]);
+		}
 		spl_autoload_register(array(__CLASS__, 'autoload'));
 	}
 
+	private static function tryToRequire($directory,$class){
+		if(file_exists(ROOT.DS.$directory.DS.$class.".php")){
+			require_once(ROOT.DS.$directory.DS.$class.".php");
+			return true;
+		}
+		return false;
+	}
+
 	public static function autoload($class){
-		global $config;
 		$find=false;
-		if(file_exists(ROOT.DS."controllers".DS.$class.".php")){
-			require_once(ROOT.DS."controllers".DS.$class.".php");
-			$find=true;
+		foreach (self::$directories as $directory){
+			if($find=self::tryToRequire($directory,$class))
+				break;
 		}
-		else if(file_exists(ROOT.DS."models".DS.$class.".php")){
-			require_once(ROOT.DS."models".DS.$class.".php");
-			$find=true;
-		}
-		else if(file_exists(ROOT.DS."framework".DS.$class.".php")){
-			require_once(ROOT.DS."framework".DS.$class.".php");
-			$find=true;
-		}
-		else{
-			if(\sizeof($config["directories"])>0){
-				foreach ($config["directories"] as $directory){
-					if(file_exists(ROOT.DS.$directory.DS.$class.".php")){
-						require_once(ROOT.DS.$directory.DS.$class.".php");
-						$find=true;
-						break;
-					}
-				}
+		if($find===false && is_array(self::$namespaces)){
+			$posSlash=strrpos($class, '\\');
+			$classname=substr($class,  $posSlash+ 1);
+			$namespace=substr($class, 0, $posSlash);
+			if(isset(self::$namespaces[$namespace])){
+				$find=self::tryToRequire(self::$namespaces[$namespace],$classname);
 			}
 		}
 		if($find===false){
