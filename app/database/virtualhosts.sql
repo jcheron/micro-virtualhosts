@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 24 Novembre 2016 à 07:39
+-- Généré le :  Mar 04 Avril 2017 à 22:57
 -- Version du serveur :  10.1.16-MariaDB
 -- Version de PHP :  7.0.9
 
@@ -41,8 +41,8 @@ CREATE TABLE `host` (
 --
 
 INSERT INTO `host` (`id`, `name`, `ipv4`, `ipv6`, `idUser`) VALUES
-(1, 'srv1', '192.168.1.101', NULL, NULL),
-(2, 'srv2', '192.168.1.102', NULL, NULL);
+(1, 'srv1', '192.168.1.101', NULL, 1),
+(2, 'srv2', '192.168.1.102', NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,13 @@ CREATE TABLE `property` (
 --
 
 INSERT INTO `property` (`id`, `name`, `description`, `prority`, `required`) VALUES
-(1, 'ServerName', 'Nom d''hôte et port que le serveur utilise pour s''authentifier lui-même', 1, 1);
+(1, 'ServerName', 'Nom d''hôte et port que le serveur utilise pour s''authentifier lui-même', 1, 1),
+(2, 'Server Alias', 'Autres noms d''un serveur utilisables pour atteindre des serveurs virtuels à base de nom', 2, 0),
+(3, 'Server path', 'Nom de chemin d''URL hérité pour un serveur virtuel à base de nom accédé par un navigateur incompatible', 3, 0),
+(12, 'Server URL', 'Aucune', 5, 3),
+(13, 'Document Root', 'Racine principale de l''arborescence des documents visible depuis Internet', 5, 3),
+(20, 'RewriteEngine', 'Ce module fournit un moteur de réécriture à base de règles permettant de réécrire les URLs des requêtes à la volée', 6, NULL),
+(21, 'RewriteRule', 'Définit les règles pour le moteur de réécriture', 7, NULL);
 
 -- --------------------------------------------------------
 
@@ -105,8 +111,10 @@ CREATE TABLE `server` (
 --
 
 INSERT INTO `server` (`id`, `name`, `config`, `configFile`, `idHost`, `idStype`) VALUES
-(1, 'Apache2', NULL, NULL, 1, 1),
-(2, 'nginX', NULL, NULL, 1, 2);
+(1, 'Apache2 sur srv1', NULL, NULL, 1, 1),
+(2, 'nginX sur srv2', NULL, NULL, 2, 2),
+(3, 'IIS sur srv1', NULL, NULL, 1, 7),
+(4, 'NGinx sur Srv 1', NULL, NULL, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -117,16 +125,18 @@ INSERT INTO `server` (`id`, `name`, `config`, `configFile`, `idHost`, `idStype`)
 CREATE TABLE `stype` (
   `id` int(11) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `configTemplate` text
+  `configTemplate` text,
+  `prism` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `stype`
 --
 
-INSERT INTO `stype` (`id`, `name`, `configTemplate`) VALUES
-(1, 'Apache 2', '<VirtualHost {{name}}>\n    {{properties}}\n</VirtualHost>'),
-(2, 'nginX', 'server{\n	listen {{name}};\n	{{properties}}\n}');
+INSERT INTO `stype` (`id`, `name`, `configTemplate`, `prism`) VALUES
+(1, 'Apache 2', '<VirtualHost {{name}}>\r\n    {{properties}}\r\n</VirtualHost>', 'apacheconf'),
+(2, 'nginX', 'server{\r\n	listen {{name}};\r\n	{{properties}}\r\n}', 'javascript'),
+(7, 'IIS', 'IIS Template', NULL);
 
 -- --------------------------------------------------------
 
@@ -146,8 +156,13 @@ CREATE TABLE `stypeproperty` (
 --
 
 INSERT INTO `stypeproperty` (`idStype`, `idProperty`, `name`, `template`) VALUES
-(1, 1, 'ServerName', 'ServerName {{value}}'),
-(2, 1, 'server_name', 'server_name {{value}};');
+(1, 1, 'ServerName', '{{name}} {{value}}'),
+(1, 2, 'ServerAlias', '{{name}} {{value}}'),
+(1, 3, 'ServerPath', '{{name}} {{value}}'),
+(1, 20, 'RewriteEngine', '{{name}} {{value}}'),
+(1, 21, 'RewriteRule', '{{name}} {{value}}'),
+(2, 1, 'server_name', 'server_name {{value}};'),
+(2, 13, 'location', '{{name}} {{value}};');
 
 -- --------------------------------------------------------
 
@@ -172,12 +187,12 @@ CREATE TABLE `url` (
 --
 
 INSERT INTO `url` (`id`, `icon`, `title`, `controller`, `action`, `subMenu`, `children`, `tools`, `roles`) VALUES
-(1, NULL, 'Accueil', 'Index', 'index', 0, '1,2,3', NULL, NULL),
+(1, NULL, 'Accueil', 'Index', 'index', 0, '1,2,3', NULL, '1,2,3'),
 (2, NULL, 'Hosts', 'Index', 'hosts', 0, '1,2', '5,6', NULL),
 (3, NULL, 'Virtualhosts', 'Index', 'virtualhosts', 0, '1,2,3,4', '4', NULL),
 (4, 'add square', 'Nouveau virtualhost...', 'Index', 'newVirtualhost', 0, NULL, NULL, NULL),
-(5, NULL, 'Ajouter', 'Index', 'index', 0, '1', NULL, NULL),
-(6, NULL, 'Supprimer', 'Index', 'index', 0, '1', NULL, NULL);
+(5, 'add', 'Ajouter', 'Index', 'index', 0, '1', NULL, NULL),
+(6, 'delete', 'Supprimer', 'Index', 'index', 0, '1', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -190,8 +205,9 @@ CREATE TABLE `user` (
   `login` varchar(45) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   `firstname` varchar(45) DEFAULT NULL,
-  `name` varchar(45) DEFAULT NULL,
+  `lastname` varchar(45) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `idrole` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -199,9 +215,9 @@ CREATE TABLE `user` (
 -- Contenu de la table `user`
 --
 
-INSERT INTO `user` (`id`, `login`, `password`, `firstname`, `name`, `email`, `idrole`) VALUES
-(1, 'admin', '0000', NULL, 'admin', 'admin@vhosts.net', 3),
-(2, 'miles', '0000', 'Miles', 'DAVIS', 'miles.davis@music.com', 2);
+INSERT INTO `user` (`id`, `login`, `password`, `firstname`, `lastname`, `email`, `image`, `idrole`) VALUES
+(1, 'admin', '0000', 'Matt', 'Giampietro', 'matt.giampietro@somewhere.com', 'https://semantic-ui.com/images/avatar2/large/matthew.png', 2),
+(2, 'molly.d', '0000', 'Molly', 'DAVIS', 'molly@thecure.com', 'http://semantic-ui.com/images/avatar2/large/molly.png', 2);
 
 -- --------------------------------------------------------
 
@@ -222,8 +238,11 @@ CREATE TABLE `virtualhost` (
 --
 
 INSERT INTO `virtualhost` (`id`, `name`, `config`, `idServer`, `idUser`) VALUES
-(2, '*:80', NULL, 1, 1),
-(3, '80 default_server', NULL, 2, 1);
+(2, '192.168.1.1/172.20.30.40', '<VirtualHost 192.168.1.1 172.20.30.40>\nDocumentRoot /www/server1\nServerName server.example.com\nServerAlias server\n</VirtualHost>', 1, 1),
+(3, '80 default_server', 'server {\r\n    listen 80 default_server;\r\n    listen [::]:80 default_server ipv6only=on;\r\n\r\n    root /usr/share/nginx/html;\r\n    index index.html index.htm;\r\n\r\n    server_name localhost;\r\n\r\n    location / {\r\n        try_files $uri $uri/ =404;\r\n    }\r\n}', 2, 1),
+(4, '172.20.30.40:80', '<VirtualHost 172.20.30.40:80>\r\nDocumentRoot /www/server1/www1\r\nServerName server.example.com\r\nServerAlias server\r\n</VirtualHost>', 1, 1),
+(5, '172.120.30.50:80', '<VirtualHost 172.120.30.50:80>\nDocumentRoot /www/default\n</VirtualHost>', 1, 1),
+(6, '80 default_server', 'server {\n    listen 8080;\n    root /data/up1;\n\n    location / {\n    }\n}', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -244,7 +263,10 @@ CREATE TABLE `virtualhostproperty` (
 --
 
 INSERT INTO `virtualhostproperty` (`idVirtualhost`, `idProperty`, `value`, `active`, `comment`) VALUES
-(2, 1, 'www.virtualhosts.net', 1, 0);
+(2, 1, 'server.example.com', 1, 0),
+(2, 2, 'server', 1, 0),
+(2, 3, '/sub1/', 0, NULL),
+(2, 13, '/www/server1', 1, NULL);
 
 --
 -- Index pour les tables exportées
@@ -335,7 +357,7 @@ ALTER TABLE `host`
 -- AUTO_INCREMENT pour la table `property`
 --
 ALTER TABLE `property`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT pour la table `role`
 --
@@ -345,12 +367,12 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `server`
 --
 ALTER TABLE `server`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `stype`
 --
 ALTER TABLE `stype`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `url`
 --
@@ -365,7 +387,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `virtualhost`
 --
 ALTER TABLE `virtualhost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Contraintes pour les tables exportées
 --
@@ -387,8 +409,8 @@ ALTER TABLE `server`
 -- Contraintes pour la table `stypeproperty`
 --
 ALTER TABLE `stypeproperty`
-  ADD CONSTRAINT `fk_stype_has_property_property1` FOREIGN KEY (`idProperty`) REFERENCES `property` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_stype_has_property_stype1` FOREIGN KEY (`idStype`) REFERENCES `stype` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_stype_has_property_property1` FOREIGN KEY (`idProperty`) REFERENCES `property` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_stype_has_property_stype1` FOREIGN KEY (`idStype`) REFERENCES `stype` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `user`
