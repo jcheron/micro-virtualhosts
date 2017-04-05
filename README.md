@@ -1,7 +1,7 @@
 # micro-virtualhosts
 Small php project for web dynamic module
 
-#Howto
+# Howto
 
 - [x] Faire un fork du projet vers votre compte github.
 - [x] Cloner le projet sur votre machine locale, en le plaçant dans la racine de votre serveur web (www ou htdocs).
