@@ -1,5 +1,4 @@
 .buildpath
 .settings
 .project
-app/models/runtime/
 app/cache/
