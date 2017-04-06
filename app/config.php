@@ -20,6 +20,6 @@ return array(
 							$jquery->semantic(new Ajax\Semantic());
 							return $jquery;
 						}],
-		"ormCache"=>["modelsNS"=>["models"],"cacheDirectory"=>"/models/cache/"],
-		"controllerNS"=>"controllers\\"
+		"ormCache"=>["cacheDirectory"=>"/models/cache/"],
+		"mvcNS"=>["models"=>"models\\","controllers"=>"controllers\\"]
 );

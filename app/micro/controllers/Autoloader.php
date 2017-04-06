@@ -42,7 +42,7 @@ class Autoloader{
 				$find=self::tryToRequire(self::$namespaces[$namespace].$classnameToDir.$classname.".php");
 			}
 		}
-		if(\array_search($namespace,self::$config["ormCache"]["modelsNS"])!==false){
+		if(substr($namespace, 0, strlen(self::$config["mvcNS"]["models"]))===self::$config["mvcNS"]["models"]){
 			OrmUtils::createOrmModelCache($class);
 		}
 	}

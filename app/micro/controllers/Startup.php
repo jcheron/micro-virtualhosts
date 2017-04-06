@@ -30,7 +30,7 @@ class Startup{
 		session_start();
 
 		$u=self::parseUrl($config, $url);
-		if(class_exists($config["controllerNS"].$u[0]) && StrUtils::startswith($u[0],"_")===false){
+		if(class_exists($config["mvcNS"]["controllers"].$u[0]) && StrUtils::startswith($u[0],"_")===false){
 			//Construction de l'instance de la classe (1er élément du tableau)
 			try{
 				if(isset($config['onStartup'])){
@@ -47,7 +47,7 @@ class Startup{
 		}
 	}
 
-	private static function getCacheDirectory($config){
+	public static function getCacheDirectory($config){
 		$config=self::$config;
 		$cacheDirectory=@$config["ormCache"]["cacheDirectory"];
 		if(!isset($cacheDirectory)){
@@ -109,7 +109,7 @@ class Startup{
 
 	public static function runAction($u,$initialize=true,$finalize=true){
 		$config=self::getConfig();
-		$ctrl=$config["controllerNS"].$u[0];
+		$ctrl=$config["mvcNS"]["controllers"].$u[0];
 		$controller=new $ctrl();
 		if(!$controller instanceof Controller){
 			print "`{$u[0]}` n'est pas une instance de contrôleur.`<br/>";
