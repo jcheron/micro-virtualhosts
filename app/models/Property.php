@@ -1,4 +1,5 @@
 <?php
+namespace models;
 class Property{
 	/**
 	 * @id
@@ -14,12 +15,12 @@ class Property{
 	private $required;
 
 	/**
-	 * @oneToMany("mappedBy"=>"property","className"=>"Stypeproperty")
+	 * @oneToMany("mappedBy"=>"property","className"=>"models\Stypeproperty")
 	*/
 	private $stypepropertys;
 
 	/**
-	 * @oneToMany("mappedBy"=>"property","className"=>"Virtualhostproperty")
+	 * @oneToMany("mappedBy"=>"property","className"=>"models\Virtualhostproperty")
 	*/
 	private $virtualhostpropertys;
 
@@ -82,5 +83,4 @@ class Property{
 	public function __toString(){
 		return $this->name;
 	}
-
 }

@@ -1,5 +1,5 @@
 <?php
-
+namespace controllers;
  use micro\utils\RequestUtils;
 
  /**

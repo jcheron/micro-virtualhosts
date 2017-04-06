@@ -1,4 +1,5 @@
 <?php
+namespace models;
 class Role{
 	/**
 	 * @id
@@ -8,7 +9,7 @@ class Role{
 	private $name;
 
 	/**
-	 * @oneToMany("mappedBy"=>"role","className"=>"User")
+	 * @oneToMany("mappedBy"=>"role","className"=>"models\User")
 	*/
 	private $users;
 
@@ -39,5 +40,4 @@ class Role{
 	public function __toString(){
 		return $this->name;
 	}
-
 }

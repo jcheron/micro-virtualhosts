@@ -1,6 +1,7 @@
 <?php
-
+namespace controllers;
 use micro\orm\DAO;
+use libraries\Auth;
 
 class Login extends ControllerBase {
 
@@ -21,7 +22,7 @@ class Login extends ControllerBase {
 	 * Simule une connexion du premier utilisateur trouvé dans la BDD
 	 */
 	public function connectAsUser(){
-		$user=DAO::getOne("User",1);
+		$user=DAO::getOne("models\User",1);
 		$_SESSION["activeUser"]=$user;
 		$this->forward("Login","index");
 	}

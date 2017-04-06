@@ -1,4 +1,12 @@
 <?php
+namespace libraries;
+use models\Property;
+
+/**
+ * Classe permettant de générer le fichier de configuration d'un virtualhost
+ * @author jc
+ *
+ */
 class ConfGenerator {
 	/**
 	 * @var Virtualhost

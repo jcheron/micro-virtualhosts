@@ -1,4 +1,6 @@
 <?php
+namespace models;
+
 class Stype{
 	/**
 	 * @id
@@ -12,12 +14,12 @@ class Stype{
 	private $prism;
 
 	/**
-	 * @oneToMany("mappedBy"=>"stype","className"=>"Server")
+	 * @oneToMany("mappedBy"=>"stype","className"=>"models\Server")
 	*/
 	private $servers;
 
 	/**
-	 * @oneToMany("mappedBy"=>"stype","className"=>"Stypeproperty")
+	 * @oneToMany("mappedBy"=>"stype","className"=>"models\Stypeproperty")
 	*/
 	private $stypepropertys;
 
@@ -72,4 +74,5 @@ class Stype{
 	public function __toString(){
 		return $this->name;
 	}
+
 }

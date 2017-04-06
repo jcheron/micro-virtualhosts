@@ -1,4 +1,8 @@
 <?php
+namespace libraries;
+use controllers\ControllerBase;
+use models\User;
+
 /**
  * Classe de gestion de l'authentification
  * @author jcheron

@@ -1,5 +1,5 @@
 <?php
-
+namespace controllers;
 use Ajax\service\JString;
 use Ajax\semantic\html\elements\HtmlHeader;
 use Ajax\semantic\html\elements\HtmlButton;
@@ -17,7 +17,7 @@ class Admin extends ControllerBase{
 		$menu->setVertical()->setInverted();
 		$i=0;
 		foreach ($dbs as $table){
-			$model=ucfirst($table);
+			$model="models\\".ucfirst($table);
 			$count=DAO::count($model);
 			$menu->getItem($i)->addLabel($count);
 			$i++;
@@ -31,12 +31,12 @@ class Admin extends ControllerBase{
 	public function showTable($table){
 		$_SESSION["table"]= $table;
 		$semantic=$this->jquery->semantic();
-		$model=ucfirst($table);
+		$model="models\\".ucfirst($table);
 
 		$header=$semantic->htmlHeader("header-table",2,"","content");
 		$header->asTitle($model,"Administration des données")->addIcon("table");
 		$datas=DAO::getAll($model);
-		$lv=$semantic->dataTable("lv", ucfirst($table), $datas);
+		$lv=$semantic->dataTable("lv", $model, $datas);
 		$attributes=$this->getFields($model);
 
 		$lv->setCaptions(array_map("ucfirst", $attributes));
@@ -59,12 +59,7 @@ class Admin extends ControllerBase{
 	}
 
 	private function getFields($model){
-		$properties=OrmUtils::getSerializableFields($model);
-		$result=[];
-		foreach ($properties as $prop){
-			$result[]=$prop->getName();
-		}
-		return $result;
+		return OrmUtils::getSerializableFields($model);
 	}
 
 	private function getIdentifierFunction($model){
@@ -100,7 +95,7 @@ class Admin extends ControllerBase{
 
 	private function getModelInstance($ids){
 		$table=$_SESSION['table'];
-		$model=ucfirst($table);
+		$model="models\\".ucfirst($table);
 		return DAO::getOne($model,$ids);
 	}
 
@@ -125,8 +120,8 @@ class Admin extends ControllerBase{
 	}
 
 	private function getFKMethods($model){
-		$reflection=new ReflectionClass($model);
-		$publicMethods=$reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+		$reflection=new \ReflectionClass($model);
+		$publicMethods=$reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 		$result=[];
 		foreach ($publicMethods as $method){
 			$methodName=$method->getName();
@@ -166,7 +161,7 @@ class Admin extends ControllerBase{
 		$hasElements=false;
 		$instance=$this->getModelInstance($ids);
 		$table=$_SESSION['table'];
-		$model=ucfirst($table);
+		$model="models\\".ucfirst($table);
 		$relations = OrmUtils::getFieldsInRelations($model);
 		$semantic=$this->jquery->semantic();
 		$grid=$semantic->htmlGrid("detail");
@@ -174,14 +169,13 @@ class Admin extends ControllerBase{
 		$wide=intval(16/sizeof($relations));
 		if($wide<4)
 			$wide=4;
-			foreach ($relations as $relation){
-				if(Reflexion::getAnnotationMember($model, $relation->getName(), "@oneToMany")!==false){
-					$objectFK=DAO::getOneToMany($instance, $relation->getName());
+			foreach ($relations as $member){
+				if(OrmUtils::getAnnotationInfoMember($model, "#oneToMany",$member)!==false){
+					$objectFK=DAO::getOneToMany($instance, $member);
 				}else{
-					$relation->setAccessible(true);
-					$objectFK=$relation->getValue($instance);
+					$objectFK=Reflexion::getMemberValue($instance, $member);
 				}
-				$memberFK=$relation->getName();
+				$memberFK=$member;
 
 				$header=new HtmlHeader("",4,$memberFK,"content");
 				if(is_array($objectFK) || $objectFK instanceof Traversable){

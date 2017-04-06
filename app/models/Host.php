@@ -1,9 +1,10 @@
 <?php
+namespace models;
 class Host{
 	/**
-	 * @id
+	* @id
 	*/
-	private $id;
+	public $id;
 
 	private $name;
 
@@ -12,13 +13,13 @@ class Host{
 	private $ipv6;
 
 	/**
-	 * @oneToMany("mappedBy"=>"host","className"=>"Server")
+	* @oneToMany("mappedBy"=>"host","className"=>"models\Server")
 	*/
 	private $servers;
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"User","name"=>"idUser","nullable"=>false)
+	 * @joinColumn("className"=>"models\User","name"=>"idUser","nullable"=>false)
 	*/
 	private $user;
 
@@ -69,7 +70,9 @@ class Host{
 	 public function setUser($user){
 		$this->user=$user;
 	}
+
 	public function __toString(){
 		return $this->name;
 	}
+
 }

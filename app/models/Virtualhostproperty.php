@@ -1,4 +1,6 @@
 <?php
+namespace models;
+
 class Virtualhostproperty{
 	/**
 	 * @id
@@ -18,13 +20,13 @@ class Virtualhostproperty{
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"Property","name"=>"idProperty","nullable"=>false)
+	 * @joinColumn("className"=>"models\Property","name"=>"idProperty","nullable"=>false)
 	*/
 	private $property;
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"Virtualhost","name"=>"idVirtualhost","nullable"=>false)
+	 * @joinColumn("className"=>"models\Virtualhost","name"=>"idVirtualhost","nullable"=>false)
 	*/
 	private $virtualhost;
 

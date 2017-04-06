@@ -1,5 +1,10 @@
 <?php
-
+namespace libraries;
+/**
+ * Classe d'échange avec le server vhServer permettant la communication avec le service web
+ * @author jc
+ *
+ */
 class ServerExchange{
 
 	private $server;
@@ -27,7 +32,7 @@ class ServerExchange{
 			if (0 === error_reporting()) {
 				return false;
 			}
-			throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
+			throw new \ErrorException($errstr, $errno, $errno, $errfile, $errline);
 		});
 			$serverResponses=[];
 			$sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);

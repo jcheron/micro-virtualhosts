@@ -11,7 +11,6 @@ return array(
 		],
 		"onStartup"=>function($action){
 		},
-		"directories"=>["libraries"],
 		"templateEngine"=>'micro\views\engine\Twig',
 		"templateEngineOptions"=>array("cache"=>false),
 		"test"=>false,
@@ -20,5 +19,7 @@ return array(
 							$jquery=new Ajax\php\micro\JsUtils(["defer"=>true]);
 							$jquery->semantic(new Ajax\Semantic());
 							return $jquery;
-						}]
+						}],
+		"ormCache"=>["modelsNS"=>["models"],"cacheDirectory"=>"/models/cache/"],
+		"controllerNS"=>"controllers\\"
 );

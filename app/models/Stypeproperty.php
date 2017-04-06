@@ -1,4 +1,6 @@
 <?php
+namespace models;
+
 class Stypeproperty{
 	/**
 	 * @id
@@ -16,13 +18,13 @@ class Stypeproperty{
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"Property","name"=>"idProperty","nullable"=>false)
+	 * @joinColumn("className"=>"models\Property","name"=>"idProperty","nullable"=>false)
 	*/
 	private $property;
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"Stype","name"=>"idStype","nullable"=>false)
+	 * @joinColumn("className"=>"models\Stype","name"=>"idStype","nullable"=>false)
 	*/
 	private $stype;
 

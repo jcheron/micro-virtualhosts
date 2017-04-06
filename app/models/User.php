@@ -1,4 +1,6 @@
 <?php
+namespace models;
+
 class User{
 	/**
 	 * @id
@@ -19,17 +21,17 @@ class User{
 
 	/**
 	 * @manyToOne
-	 * @joinColumn("className"=>"Role","name"=>"idrole","nullable"=>false)
+	 * @joinColumn("className"=>"models\Role","name"=>"idrole","nullable"=>false)
 	*/
 	private $role;
 
 	/**
-	 * @oneToMany("mappedBy"=>"user","className"=>"Host")
+	 * @oneToMany("mappedBy"=>"user","className"=>"models\Host")
 	*/
 	private $hosts;
 
 	/**
-	 * @oneToMany("mappedBy"=>"user","className"=>"Virtualhost")
+	 * @oneToMany("mappedBy"=>"user","className"=>"models\Virtualhost")
 	*/
 	private $virtualhosts;
 
@@ -116,4 +118,5 @@ class User{
 	public function __toString(){
 		return $this->firstname." ".$this->lastname." (".$this->login.")";
 	}
+
 }

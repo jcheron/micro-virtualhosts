@@ -1,5 +1,5 @@
 <?php
-
+namespace controllers;
 use Ajax\semantic\html\elements\HtmlButton;
 use Ajax\semantic\html\elements\HtmlButtonGroups;
 use micro\utils\RequestUtils;
