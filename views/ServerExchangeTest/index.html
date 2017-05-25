@@ -1,0 +1,8 @@
+{{ q["infoFrm"] |raw }}
+{{ q["frmPing"] |raw }}
+<div class="ui message" id="pingResponse">
+
+</div>
+{% if ajax is defined %}
+    {{ script_foot |raw }}
+{% endif %}
