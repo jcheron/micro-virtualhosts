@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Votre Virtualhost</title>
+</head>
+
+<body>
+
+<div class="ui animated button" tabindex="0">
+  <div class="visible content">Retour &agrave; mes services</div>
+  <div class="hidden content">
+    <i class="left arrow icon"></i>
+  </div>
+</div>
+<div class="ui animated button" tabindex="0">
+  <div class="visible content">Retour &agrave; {{ id_serveur_vhost }}</div>
+  <div class="hidden content">
+    <i class="right arrow icon"></i>
+  </div>
+</div>
+
+<h1 class="ui header">
+  <img class="ui massive rounded image" src="/micro-virtualhosts/public/img/virtualhost.png">
+  <div class="content">
+    Vhost # {{ id_vhost }}
+    <div class="sub header">Informations sur l'h&ocircte virtuel</div>
+  </div>
+</h1>
+
+
+
+
+<table class="ui celled padded table">
+  <thead>
+  <tr>
+    <th>Serveur</th>
+    <th>Addresse</th>
+    <th>Config</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="single line">
+        {{ id_serveur_vhost }}
+      </td>
+      <td class="single line">
+       {{ nom_vhost }}
+      </td>
+      <td>
+      <pre class='language-markup'><code>{{ config_vhost }}</code></pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+<table class="ui celled striped table">
+  <thead>
+    <tr><th colspan="3">
+      Propri&eacute;t&eacute;s de l'h&ocircte virtuel
+    </th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td class="collapsing">
+        Doma&icircne
+      </td>
+      <td>{{ vhP_value }}</td>
+    </tr>
+    <tr>
+      <td>
+        Etat
+      </td>
+      
+      <td>
+    {% if vhP_active == 1 %}
+ 		<i class="selected radio icon"></i> Actif	
+	{% else %}
+	    <i class="radio icon"></i> Inactif  
+	    	
+    {% endif %}    
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Commentaire
+      </td>
+      <td>
+      
+    {% if vhP_comment == 0 %}
+ 		<i>Pas de commentaires</i>
+ 		
+	{% else %}
+	    <i>{{ vhP_comment }}</i> 
+	     	
+    {% endif %}  
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>
