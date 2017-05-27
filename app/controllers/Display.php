@@ -82,4 +82,49 @@ class Display extends ControllerBase
 	}
 	
 	
+	
+	/*                                                            
+	 * Arriver sur cette fonction si on clique sur le boutton de conf. dans My
+	 */                                                        
+	
+	public function confvhost ($idvirtualhost)
+	{
+		
+		$vHost=DAO::getOne("models\Virtualhost","id=".$idvirtualhost);
+		
+		
+		
+		/*
+		 * setConf($_POST[newConfiguration])
+		 * etc..
+		 * 
+		 */
+		
+		
+		
+		$this->loadView("Display/confvhost.html"
+				,array(
+						"id_vhost"=>$idvirtualhost
+				));
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
 }
