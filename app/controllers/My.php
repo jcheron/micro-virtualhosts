@@ -1,24 +1,16 @@
 <?php
-
 namespace controllers;
 use libraries\Auth;
 use micro\orm\DAO;
 use Ajax\semantic\html\content\view\HtmlItem;
-
-
-
 /**
- * Controller My de base -> PiquÃ© depuis kobject.net
+ * Controller My de base -> Piqué depuis kobject.net
  **/
-
-
-
-
 class My extends ControllerBase{
 	
 	/**
 	 * Mes services
-	 * Hosts et virtualhosts de l'utilisateur connectÃ©
+	 * Hosts et virtualhosts de l'utilisateur connecté
 	 */
 	
 	
@@ -38,6 +30,24 @@ class My extends ControllerBase{
 				
 				//A faire : ajouter virtualhosts
 				
+			
+				<?php
+				mysql_connect("virtualhosts", "root", "root") or die(mysql_error( )) ;
+				mysql_select_db("ap") or exit(mysql_error( )) ;
+				
+				$result = mysql_query("SELECT pseudo FROM utilisateur") or exit(mysql_error( )) ;
+				
+				while($row = mysql_fetch_array($result))
+				{
+					
+					echo '<span class="pseudo">'. row['pseudo'].'</span>';
+					
+				}
+				?>
+			
+			
+			
+			
 				$this->jquery->compile($this->view);
 				$this->loadView("My/index.html");
 		}
