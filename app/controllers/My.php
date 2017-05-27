@@ -4,13 +4,13 @@ use libraries\Auth;
 use micro\orm\DAO;
 use Ajax\semantic\html\content\view\HtmlItem;
 /**
- * Controller My de base -> Piqué depuis kobject.net
+ * Controller My de base 
  **/
 class My extends ControllerBase{
 	
 	/**
 	 * Mes services
-	 * Hosts et virtualhosts de l'utilisateur connecté
+	 * Hosts et virtualhosts de l'utilisateur connectÃ©
 	 */
 	
 	
