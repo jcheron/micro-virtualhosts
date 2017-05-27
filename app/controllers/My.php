@@ -47,8 +47,7 @@ class My extends ControllerBase{
 		
 		else 
 		{
-			header("/micro-virtualhosts/Auth/pleaselogin");
-			exit;
+			$this->loadView("Auth/pleaselogin.html");
 		}
 		
 	}
