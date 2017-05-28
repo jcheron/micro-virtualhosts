@@ -11,7 +11,7 @@ class Display extends ControllerBase
 	
 	public function index()
 	{
-	
+		var_dump($_POST);
 	}
 	
 	
@@ -100,6 +100,23 @@ class Display extends ControllerBase
 		 * 
 		 */
 		
+		if ( isset( $_POST ["newConfiguration"]) )
+		{
+			
+			if ( $_POST["newConfiguration"] !== "")
+			{
+				$vHost->setConfig($_POST["newConfiguration"]);
+			}
+			if ($_POST["newServeur"] !== "")
+			{
+				$vHost->setServer($_POST["newServeur"]);
+			}
+			if ($_POST["newAddresse"] !== "")
+			{
+				$vHost->setName($_POST["newAddresse"]);
+			}
+		
+		}
 		
 		
 		$this->loadView("Display/confvhost.html"
