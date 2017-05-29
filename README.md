@@ -1,5 +1,5 @@
 # micro-virtualhosts
-Small php project for web dynamic module
+Small php project for  dynamic web module
 
 # Howto
 

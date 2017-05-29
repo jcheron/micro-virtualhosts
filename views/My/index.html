@@ -1,0 +1,20 @@
+<h2 class="ui header">
+    Mes services
+    <div class="sub header">Liste des machines et des machines virtuelles HTTP.</div>
+</h2>
+ 
+<div class="ui grid">
+    <div class="eight wide column">
+        <h3 class="ui header">
+            Mes Hosts
+            <div class="sub header">Serveurs dédiés.</div>
+            {{ q["list-hosts"] | raw }}
+        </h3>
+    </div>
+    <div class="eight wide column">
+            <h3 class="ui header">
+            Mes Virtualhosts
+            <div class="sub header">Hôtes virtuels sur serveurs mutualisés.</div>
+        </h3>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Configurez votre Vhost</title>
+</head>
+<body>
+
+
+
+<a href="/micro-virtualhosts/My">
+<div class="ui animated button" tabindex="0">
+  <div class="visible content">Retour &agrave; mes services</div>
+  <div class="hidden content">
+    <i class="left arrow icon"></i>
+  </div>
+</div>
+</a>
+
+
+<h1 class="ui header">
+  <img class="ui massive rounded image" src="/micro-virtualhosts/public/img/virtualhost.png">
+  <div class="content">
+    Vhost ID [{{ id_vhost }}]
+    <div class="sub header">Configuration de l'h&ocircte virtuel</div>
+  </div>
+</h1>
+
+
+<form method="post" name="vhostconf" action="/micro-virtualhosts/Display" >
+
+
+<table class="ui celled padded table">
+  <thead>
+    <tr>
+    	<th>Param&egrave;tre</th>
+	    <th>Nouvelle valeur</th>
+  	</tr>
+  	
+  </thead>  
+  <tbody>
+
+    <tr>
+   
+      <td>
+        <h3 class="ui center aligned header">Serveur</h3>
+      </td>
+     
+      <td class="single line">
+				<div class="ui form">
+		  			<div class="field">
+				    	<input type="text" name="newServeur">
+				  	</div>
+				</div>
+      </td>
+      
+    </tr>
+    
+    <tr>
+    
+      <td>
+        <h3 class="ui center aligned header">Addresse</h3>
+      </td>
+      
+        <td class="single line">
+				<div class="ui form">
+		  			<div class="field">
+				    	<input type="text" name="newAddresse">
+				  	</div>
+				</div>
+      </td>
+
+    </tr>
+    
+    <tr>
+    
+      <td>
+        <h3 class="ui center aligned header">Configuration</h3>
+      </td>
+      
+      <td class="single line">
+	        <div class="ui form">
+			  <div class="field">
+			    <textarea rows="8" name="newConfiguration"></textarea>
+			  </div>
+			</div>
+      </td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<div class="ui large basic icon buttons">
+  <button class="ui button active"><i class="save icon"></i>Appliquer</button>
+</div>
+
+</form>
+
+
+</body>
+</html>

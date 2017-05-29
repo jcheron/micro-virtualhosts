@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+    # Le premier serveur virtuel de la liste est aussi le
+    # serveur par défaut pour *:80
+    ServerName www.example.com
+    ServerAlias "example.com"
+    DocumentRoot "/www/domain"
+</VirtualHost>
